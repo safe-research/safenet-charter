@@ -49,8 +49,8 @@ This charter defines:
 ### Common law model
 
 - Initial rules are set at launch.
-- Council rulings become precedent.
-- Settled precedent may be codified into later charter versions.
+- Council rulings are rebuttable precedent as defined in § 5.1.
+- Only SafeDAO may codify precedent through adoption of a later Charter version.
 - Goal: reduce manual Council load and enable programmatic arbitration for clear cases.
 
 ---
@@ -788,9 +788,14 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Council composition
 
-- The Council consists of members appointed by SafeDAO vote.
-- The number of Council members, appointment process, replacement process, term length, and removal process must be defined by SafeDAO vote.
+- The Council members and Arbitrator Safe threshold are defined through a SafeDAO proposal.
+- Appointment and removal are controlled by SafeDAO. Membership creates no entitlement to continuation or reappointment.
 - A SafeDAO vote may delegate operational details to a Council mandate, provided the delegation is public and specific.
+
+#### Eligibility and independence
+
+- Members must have relevant security-governance expertise.
+- Council membership and the Council mandate create no contractual relationship with SEF.
 
 #### Effect
 
@@ -801,9 +806,14 @@ A settings change is not insecure under this rule only if all of the following a
 #### Authority
 
 - The Council may decide only transactions that enter arbitration under the applicable Safenet protocol rules.
-- The Council may classify an arbitration request as secure, insecure, or out of scope, as applicable under this charter.
-- The Council may apply precedent under Article V.
-- The Council may identify issues for future charter updates.
+- For an in-scope request, the Council may rule only `secure` or `insecure`. It may determine that a request is `out of scope` under § 3.9, which is not a security ruling.
+- The Council may apply rebuttable precedent under Article V.
+- The Council may identify issues and recommend future amendments to SafeDAO.
+
+#### Limits
+
+- The Council must not issue arbitrary, discriminatory, malicious, bad-faith, grossly negligent, self-interested, or revenue-motivated rulings.
+- The Council cannot authorize transaction execution, change protocol parameters, direct funds outside the protocol-defined outcome, expand its jurisdiction, or amend this Charter.
 
 #### No general certification
 
@@ -814,26 +824,30 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Procedure
 
-- Council voting procedure, quorum, voting period, submission format, evidence-submission process, ruling publication, economic mechanics, and execution mechanics are governed by this charter, the applicable SafeDAO vote, and Safenet protocol parameters.
+1. A split Sentinel decision enters arbitration under the applicable Safenet protocol rules.
+2. The disputed transaction, Sentinel votes, and affected Sentinels are identified.
+3. Council members disclose conflicts of interest. A conflicted member recuses by not signing the ruling.
+4. Recusal does not change the Arbitrator Safe's configured threshold.
+5. The onchain opening of arbitration constitutes protocol notice; this Charter creates no additional communication or response duty.
+6. Eligible Council members evaluate the transaction under the applicable Charter version and may consider only admissible evidence.
+7. For an in-scope request, the Council approves a reasoned ruling satisfying § 5.2 through the Arbitrator Safe and submits it to the Safenet arbitration protocol.
+8. For an out-of-scope request under § 3.9, the Council does not submit `resolveDispute`; the protocol-defined arbitration timeout applies.
+9. An in-scope ruling is valid only if it is submitted to the Safenet arbitration protocol within four weeks after arbitration begins. Reaching the Arbitrator Safe's threshold alone does not complete the ruling.
+10. If no valid ruling is submitted within four weeks, the protocol-defined fallback returns participating Sentinel bonds, refunds the Proposer fee, and applies no Council-directed slashing.
+11. A transaction that entered arbitration remains ineligible for validator attestation regardless of the ruling or fallback.
 
 #### Minimum ruling requirements
 
-- Each ruling should identify, where applicable:
-  - the disputed transaction;
-  - the ruling outcome;
-  - the applicable charter version;
-  - the rule or precedent applied;
-  - the evidence relied on;
-  - the reason for the ruling.
+- Each in-scope ruling must satisfy the record requirements in § 5.2.
 
 ### § 6.4 Precedent review
 
 #### Rule
 
 - Final Council rulings are not reversed or retroactively changed under this charter.
-- The Council may review how prior rulings are taken into account as precedent in later cases.
+- Prior rulings are rebuttable precedent for later cases under § 5.1.
 
-#### Council may distinguish, narrow, or revise the precedential effect of a prior ruling if
+#### Council may distinguish, narrow, or depart from a prior ruling if
 
 - the prior ruling is inconsistent with this charter;
 - material facts or protocol assumptions have changed;
@@ -842,10 +856,9 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Effect
 
-- A ruling that distinguishes, narrows, or revises the precedential effect of a prior ruling must identify the prior ruling and explain the reason for the change.
+- A ruling that distinguishes, narrows, or departs from a prior ruling must identify it and explain the reason.
 - The prior ruling remains final for the transaction it decided.
 - Any revised treatment of precedent applies only to later cases.
-- The prior ruling remains final for the transaction it decided.
 
 ### § 6.5 SafeDAO and protocol primacy
 
@@ -854,6 +867,8 @@ A settings change is not insecure under this rule only if all of the following a
 - This charter defines the substantive transaction-security standard applied by the Council.
 - SafeDAO votes define Council composition, appointment, removal, and mandate.
 - Safenet protocol parameters define arbitration eligibility, procedural mechanics, economic mechanics, and execution mechanics.
+- A Council ruling determines the applicable Sentinel slashing outcome but does not authorize the disputed transaction for validator attestation or execution.
+- A transaction that enters arbitration remains ineligible for validator attestation regardless of the ruling.
 
 #### Protocol economic mechanics include
 
@@ -862,6 +877,12 @@ A settings change is not insecure under this rule only if all of the following a
 - rewards;
 - fee allocation;
 - execution or non-execution consequences.
+
+#### Slashing alignment
+
+- Automatic non-reveal slashing occurs under the protocol rules without a Council decision.
+- Council-directed slashing may occur only following a valid Council ruling.
+- The applicable Sentinel Terms and protocol rules must authorize both mechanisms; this Charter does not create a contractual relationship with SEF.
 
 #### Conflict hierarchy
 
@@ -880,4 +901,5 @@ A settings change is not insecure under this rule only if all of the following a
 - If any provision of this charter is invalid, unenforceable, superseded by SafeDAO vote, or superseded by Safenet protocol parameters, the remaining provisions continue to apply.
 
 ---
+
 — End of Safenet Arbitration Charter —
