@@ -1,14 +1,9 @@
 # Safenet Arbitration Charter
 
-> **Status:** Draft — format proposal. Not yet in force.
->
 > **Version:** v1
->
-> **Effective date:** TBD — pending Security Council formation
->
-> **Issued by:** Safenet Security Council
 
 Authoritative rulebook for Safenet Security Council arbitration.
+The canonical Charter is the IPFS document referenced by `safenet-charter.safe.eth`. Each transaction is governed by the Charter version effective when it was proposed.
 
 ---
 
@@ -20,7 +15,9 @@ This charter defines:
 - which transaction-security rules the Security Council applies in disputed transactions;
 - how Council rulings are made, recorded, and treated as precedent;
 - how the Safenet Security Council is composed, authorised, and procedurally governed;
-- how this charter relates to SafeDAO votes and Safenet protocol parameters.
+- how this charter relates to SafeDAO votes and Safenet protocol parameters;
+- how Council rulings determine the applicable Sentinel slashing outcome;
+- the Council's authority and explicit limits.
 
 ### Scope
 
@@ -29,6 +26,14 @@ This charter defines:
 - Target manipulation.
 - Council composition, authority, procedure, precedent, and charter versioning.
 - The scope may be expanded through the charter versioning process under § 5.4.
+
+### Council and protocol boundaries
+
+- The Council does not authorize transaction execution.
+- A transaction that enters arbitration is not eligible for validator attestation, regardless of the ruling.
+- A secure ruling resolves the arbitration and its protocol-defined Sentinel consequences only.
+- Execution, fees, bonds, slashing, and timeout consequences remain governed by Safenet protocol rules.
+- The Council cannot change protocol parameters, amend this Charter, or expand its own jurisdiction.
 
 ### Networks
 
