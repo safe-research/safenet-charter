@@ -1,0 +1,12 @@
+{
+  "config": {
+    "default": true,
+    // Prose document, not wrapped code — line length isn't a meaningful signal here.
+    "MD013": false,
+    // Sub-labels (e.g. #### Rules, #### Council considers) repeat under many
+    // different §§ by design — only flag duplicates that share the same parent.
+    "MD024": { "siblings_only": true }
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules"]
+}
