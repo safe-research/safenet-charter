@@ -410,6 +410,10 @@ This charter defines:
 - observation time;
 - reliability basis.
 
+#### Protocol notice
+
+- The onchain opening of an arbitration constitutes protocol notice. This Charter creates no additional communication, evidence-access, or response duty.
+
 ### § 3.5 Excluded evidence
 
 #### Excluded
@@ -436,6 +440,7 @@ This charter defines:
 - If it fails any Article IV rule, it is insecure.
 - Deterministic rule failure is established by direct application of the rule.
 - Principle-based rule failure requires a reasonable evidence-grounded Council finding.
+- Where the protocol-supported ruling format permits, the Council should identify the applicable Charter rule and version in the ruling explanation or associated metadata.
 
 ### § 3.8 Ambiguity
 
@@ -461,13 +466,19 @@ This charter defines:
 
 #### Rule
 
-- If an arbitration request is outside the transaction-security scope or networks defined in Article I, the Council records it as out of scope and does not make a security determination under this charter.
+- If an arbitration request is outside the transaction-security scope or networks defined in Article I, the Council determines it is out of scope and does not make a security determination under this Charter.
 
 #### Effect
 
-- An out-of-scope request is not treated as secure.
-- Unless another applicable Safenet process accepts the request, an out-of-scope request must not proceed through Safenet.
-- An out-of-scope status is not a finding that the transaction is malicious, compromised, or otherwise insecure.
+- An out-of-scope determination is neither a `secure` nor an `insecure` ruling.
+- The Council does not submit a `resolveDispute` transaction for that request.
+- The request remains unresolved until the protocol-defined arbitration timeout applies.
+- An out-of-scope determination is not a finding that the transaction is malicious, compromised, or otherwise insecure.
+
+#### Council outcomes
+
+- A valid Council ruling on an in-scope request can only be `secure` or `insecure`.
+- The Council cannot issue an `unknown` ruling.
 
 ---
 
