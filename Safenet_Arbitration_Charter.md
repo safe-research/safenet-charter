@@ -578,7 +578,7 @@ A settings change is not insecure under this rule only if all of the following a
 - Principle-based.
 - Apply Article II definitions.
 - Apply the Article III ambiguity standard.
-- Prior similar rulings are binding precedent under Article V.
+- Prior rulings are considered under § 5.1.
 
 ---
 
@@ -601,7 +601,7 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Precedent
 
-- Ambiguous-case rulings become precedent under Article V.
+- Ambiguous-case rulings become rebuttable precedent under Article V.
 
 ---
 
@@ -649,7 +649,7 @@ A settings change is not insecure under this rule only if all of the following a
 #### Notes
 
 - An approval can be functionally unlimited even if not technically max `uint256`.
-- Prior rulings on specific amounts or token types are precedent.
+- Prior rulings on specific amounts or token types are rebuttable precedent under Article V.
 
 ---
 
@@ -673,7 +673,7 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Precedent
 
-- Rulings on application of security evidence may become precedent under Article V, unless superseded by protocol parameters.
+- Rulings on application of security evidence may become rebuttable precedent under Article V, unless superseded by this Charter or protocol parameters.
 
 ---
 
