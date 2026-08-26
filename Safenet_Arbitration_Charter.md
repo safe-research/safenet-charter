@@ -301,6 +301,58 @@ This charter defines:
 
 - Excluded statements carry no evidentiary weight.
 
+### § 2.12 Applicable Charter version
+
+#### Definition
+
+- The applicable Charter version is the IPFS document referenced by `safenet-charter.safe.eth` when the transaction was proposed.
+
+### § 2.13 Council ruling
+
+#### Definition
+
+- A valid Council ruling on an in-scope arbitration request is `secure` or `insecure`. The Council cannot issue an `unknown` ruling.
+- The Council may determine that a request is `out of scope` under § 3.9. This is not a security ruling.
+
+### § 2.14 Sentinel vote reason
+
+#### Definition
+
+- Every revealed Sentinel vote carries a `reason` string. The exact string is cryptographically bound to the Sentinel's prior commitment and emitted onchain.
+- The protocol accepts an empty or arbitrary string and does not validate whether the reason correctly applies this Charter. The reason does not affect vote counting or create another verdict.
+
+#### Current standard Sentinel behavior
+
+- A secure vote uses an empty reason.
+- An insecure vote uses the applicable Charter rule identifier.
+
+### § 2.15 Affected Sentinel
+
+#### Definition
+
+- An affected Sentinel is a Sentinel whose vote may result in Council-directed slashing in the arbitration.
+
+### § 2.16 Conflict of interest and recusal
+
+#### Definitions
+
+- A conflict of interest is an interest or relationship reasonably capable of impairing a Council member's independent judgment.
+- Recusal means that the conflicted member does not sign the ruling. Recusal does not change the Arbitrator Safe's configured threshold.
+
+### § 2.17 Valid ruling
+
+#### Definition
+
+- A valid ruling satisfies this Charter's applicable requirements, is approved through the Council's Arbitrator Safe, and is submitted to the Safenet arbitration protocol within four weeks after arbitration begins. Reaching the Arbitrator Safe's threshold alone does not complete the ruling.
+
+### § 2.18 Escape-hatch announcement transaction
+
+#### Protocol boundary
+
+- Calls to the Safenet Guard's `announceTransaction` and `cancelAnnouncement` functions are auto-allowed by the Guard without Sentinel review or Council arbitration.
+- An announcement commits to every parameter of the future Safe `execTransaction` except the Safe nonce and signatures.
+- The Guard does not constrain the outer announcement transaction's gas or refund parameters. Any requirement such as `gasPrice == 0` must be implemented or enforced at the contract, protocol, or transaction-construction layer and is outside this Charter.
+
 ---
 
 ## Article III — Ruling Standard
