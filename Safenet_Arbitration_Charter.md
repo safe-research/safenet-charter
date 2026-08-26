@@ -683,36 +683,43 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Rule
 
-- Prior rulings of the Council on similar fact patterns are binding precedent in future cases, subject to precedent review under § 6.4.
+- A prior ruling is rebuttable precedent for a materially similar later case. The Council should follow it unless the later case is materially distinguishable or the Council identifies and explains a justified reason for departure under § 6.4. Precedent cannot amend or override this Charter.
 
 #### Council must
 
 - identify the most closely analogous prior ruling before exercising independent judgment on a fact pattern that has previously been decided;
-- apply the most closely analogous prior ruling where applicable.
+- apply the most closely analogous prior ruling unless the later case is materially distinguishable or a ground under § 6.4 justifies departure.
+- identify the prior ruling and explain any departure from it.
 
 #### For novel fact patterns, Council must
 
 - reason by analogy from the closest rule or precedent;
 - state the analogy in the ruling;
 - record the ruling as precedent;
-- flag the issue for possible codification in a future charter version.
+- flag the issue for possible amendment by SafeDAO.
 
 ### § 5.2 Precedent record
 
 #### Authoritative record
 
-- The authoritative record of a ruling is the onchain arbitration transaction issued through the Safenet arbitration oracle or other protocol-recognised ruling mechanism in effect at the relevant time.
-- The authoritative record includes any ruling metadata, explanation, or evidence reference included in or linked from that transaction.
+- The authoritative record of a ruling is the onchain arbitration transaction submitted through the Safenet arbitration protocol.
+- The Arbitrator Safe submits `resolveDispute(requestId, approveWins, context)`. The resulting `DisputeResolved` event records the request, outcome, slashed amount, and `context`.
+- The `context` must contain a concise ruling explanation or an IPFS CID referencing the ruling explanation.
 
-#### The ruling record should identify, where available
+#### Onchain-identifiable information
 
-- the disputed transaction;
-- the ruling outcome;
-- the ruling timestamp;
-- the applicable charter version;
-- the rule or precedent applied;
-- any public evidence relied on;
-- any content-addressed evidence or explanation reference.
+- request and disputed transaction;
+- ruling outcome;
+- ruling transaction and timestamp.
+
+#### The ruling explanation must identify
+
+- the Safe and network;
+- the applicable Charter version;
+- at least one applicable rule identifier and any precedent applied;
+- any material evidence relied on;
+- any recusals;
+- the reason for the ruling.
 
 #### A ruling establishes precedent when it
 
@@ -729,7 +736,7 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Rule
 
-- Where a line of precedent has established a rule with sufficient clarity and consistency that it can be stated as a bright-line standard, the Council may codify that rule into a new version of this charter.
+- Any person may propose a Charter amendment through the SafeDAO governance process. The Council may also recommend amendments. Only SafeDAO may adopt and activate a new Charter version.
 
 #### Effect
 
@@ -741,25 +748,33 @@ A settings change is not insecure under this rule only if all of the following a
 
 #### Update authority
 
-- This charter may be updated by the Security Council only within the update authority delegated by SafeDAO vote.
+- Any person may propose an amendment through the SafeDAO governance process. The Council may recommend amendments but cannot adopt or activate them. Only SafeDAO may adopt and activate a new Charter version.
 
 #### Each version must identify
 
 - version number;
-- effective date;
+- the SafeDAO proposal approving the version;
+- the IPFS hash referenced by `safenet-charter.safe.eth`;
 - canonical publication location;
 - material changes from the prior version.
 
+#### Adoption and effectiveness
+
+- A proposed version is published on IPFS.
+- A successful SafeDAO proposal authorizes the update of the IPFS hash referenced by `safenet-charter.safe.eth`.
+- The new version becomes effective when the approved ENS update executes.
+
 #### Effect of new versions
 
-- A new version applies only from its effective date.
-- Prior rulings remain governed by the charter version in effect at the relevant time.
+- A new version applies only to transactions proposed after it becomes effective.
+- Each transaction and resulting ruling remain governed by the Charter version effective when the transaction was proposed.
 
 #### Publication
 
-- Versions are published on IPFS and pinned at the canonical ENS location defined by Safenet protocol parameters.
-- The latest version is referenced at the protocol-recognised latest-version location.
-- If publication metadata conflicts, protocol-recognised publication metadata controls.
+- Versions are published on IPFS; `safenet-charter.safe.eth` references the canonical effective version.
+- Each Charter version must identify its IPFS CID and approving SafeDAO proposal.
+- Historical versions are identified by the onchain history of updates to `safenet-charter.safe.eth`. SafeDAO governance history may provide a corresponding human-readable index.
+- If publication metadata conflicts, the IPFS hash referenced by `safenet-charter.safe.eth` controls.
 
 ---
 
