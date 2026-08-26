@@ -1,7 +1,5 @@
 # Safenet Arbitration Charter
 
-> **Version:** v1
-
 Authoritative rulebook for Safenet Security Council arbitration.
 The canonical Charter is the IPFS document referenced by `safenet-charter.safe.eth`. Each transaction is governed by the Charter version effective when it was proposed.
 
@@ -804,4 +802,4 @@ A settings change is not insecure under this rule only if all of the following a
 - If any provision of this charter is invalid, unenforceable, superseded by SafeDAO vote, or superseded by Safenet protocol parameters, the remaining provisions continue to apply.
 
 ---
-— End of Safenet Arbitration Charter, v1 —
+— End of Safenet Arbitration Charter —
