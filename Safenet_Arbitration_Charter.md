@@ -846,6 +846,7 @@ A settings change is not insecure under this rule only if all of the following a
 
 - Final Council rulings are not reversed or retroactively changed under this charter.
 - Prior rulings are rebuttable precedent for later cases under § 5.1.
+- This does not create an appeal or reconsideration process for a specific ruling; a ruling's outcome and any resulting slashing are final for the transaction it decided.
 
 #### Council may distinguish, narrow, or depart from a prior ruling if
 
