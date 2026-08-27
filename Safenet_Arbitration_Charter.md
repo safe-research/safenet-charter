@@ -466,15 +466,15 @@ This charter defines:
 
 #### Rule
 
-- If an arbitration request is outside the transaction-security scope or networks defined in Article I, the Council determines it is out of scope and does not make a security determination under this Charter.
+- If an arbitration request is outside the transaction-security scope or networks defined in Article I, the Council determines it is `out of scope` and does not make a security determination under this Charter.
 
 #### Effect
 
 - An out-of-scope determination is neither a `secure` nor an `insecure` ruling.
 - The Council does not submit a `resolveDispute` transaction for that request.
-- Having made this determination, the Council may, but is not required to, record the request as out of scope. Doing so ends the Council's consideration of the request without waiting for the protocol-defined arbitration timeout.
-- If the Council does not record a request as out of scope, the request remains unresolved until the protocol-defined arbitration timeout applies, as before.
-- When recording a request as out of scope, the Council must include a brief reason. The timeout path has no equivalent reason, since no Council action occurs.
+- Having made this determination, the Council may, but is not required to, record the request as `out of scope`. Doing so ends the Council's consideration of the request without waiting for the protocol-defined arbitration timeout.
+- If the Council does not record a request as `out of scope`, the request remains unresolved until the protocol-defined arbitration timeout applies, as before.
+- When recording a request as `out of scope`, the Council must include a brief reason. The timeout path has no equivalent reason, since no Council action occurs.
 - An out-of-scope determination has the same protocol-defined consequences for bonds, fees, and slashing whether it is recorded by the Council or resolved by the protocol-defined arbitration timeout — only the timing differs.
 - An out-of-scope determination is not a finding that the transaction is malicious, compromised, or otherwise insecure.
 
@@ -834,7 +834,7 @@ A settings change is not insecure under this rule only if all of the following a
 5. The onchain opening of arbitration constitutes protocol notice; this Charter creates no additional communication or response duty.
 6. Eligible Council members evaluate the transaction under the applicable Charter version and may consider only admissible evidence.
 7. For an in-scope request, the Council approves a reasoned ruling satisfying § 5.2 through the Arbitrator Safe and submits it to the Safenet arbitration protocol.
-8. For an out-of-scope request under § 3.9, the Council does not submit `resolveDispute`. The Council may record the request as out of scope to end consideration immediately; otherwise, the protocol-defined arbitration timeout applies.
+8. For an out-of-scope request under § 3.9, the Council does not submit `resolveDispute`. The Council may record the request as `out of scope` to end consideration immediately; otherwise, the protocol-defined arbitration timeout applies.
 9. An in-scope ruling is valid only if it is submitted to the Safenet arbitration protocol within four weeks after arbitration begins. Reaching the Arbitrator Safe's threshold alone does not complete the ruling.
 10. If no valid ruling is submitted within four weeks, the protocol-defined fallback returns participating Sentinel bonds, refunds the Proposer fee, and applies no Council-directed slashing.
 11. A transaction that entered arbitration remains ineligible for validator attestation regardless of the ruling or fallback.
