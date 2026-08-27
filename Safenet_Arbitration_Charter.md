@@ -474,6 +474,8 @@ This charter defines:
 - The Council does not submit a `resolveDispute` transaction for that request.
 - Having made this determination, the Council may, but is not required to, record the request as out of scope. Doing so ends the Council's consideration of the request without waiting for the protocol-defined arbitration timeout.
 - If the Council does not record a request as out of scope, the request remains unresolved until the protocol-defined arbitration timeout applies, as before.
+- When recording a request as out of scope, the Council may include a brief reason. The timeout path has no equivalent reason, since no Council action occurs.
+- An out-of-scope determination has the same protocol-defined consequences for bonds, fees, and slashing whether it is recorded by the Council or resolved by the protocol-defined arbitration timeout — only the timing differs.
 - An out-of-scope determination is not a finding that the transaction is malicious, compromised, or otherwise insecure.
 
 #### Council outcomes
