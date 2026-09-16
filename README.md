@@ -10,9 +10,9 @@ The following process is proposed but not yet in effect:
 
 1. Draft and review changes on GitHub.
 2. Publish the proposed Charter version to IPFS.
-3. Submit a SafeDAO proposal to approve the version and execute an ENS update of `safenet-charter.safe.eth` via SafeSnap.
+3. Submit a SafeDAO proposal to approve the version and execute an ENS update of `charter.safenet-gov.eth` via SafeSnap.
 4. Monitor execution of the SafeSnap transaction.
 
 ## What is (and isn't) authoritative
 
-GitHub files, commits, pull requests, merges, tags, and releases are **not** authoritative and do not make any Charter version effective. The effective Charter is only the IPFS document referenced by `safenet-charter.safe.eth`, following the applicable SafeDAO-approved update.
+GitHub files, commits, pull requests, merges, tags, and releases are **not** authoritative and do not make any Charter version effective. The effective Charter is only the IPFS document referenced by `charter.safenet-gov.eth`, following the applicable SafeDAO-approved update.
