@@ -1,0 +1,54 @@
+name: charter-cid-check
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install xxd
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xxd
+
+      - name: Install kubo (ipfs CLI)
+        run: |
+          curl -sSL -o kubo.tar.gz https://dist.ipfs.tech/kubo/v0.35.0/kubo_v0.35.0_linux-amd64.tar.gz
+          echo "771112001cef93d0c77fa61450990a3eb9d86ebd9cda6ba5ffed550db3f163b97426f01f6fe7e4d9532699474385f3e524b7499d55e4d92848aa0b02899b5c9e  kubo.tar.gz" | sha512sum -c -
+          tar -xzf kubo.tar.gz
+          sudo bash kubo/install.sh
+          ipfs init
+
+      - name: Compute CID and diff
+        run: |
+          set +e
+          cid_output="$(scripts/charter-ipfs.sh cid 2>&1)"
+          diff_output="$(scripts/charter-ipfs.sh diff 2>&1)"
+          set -e
+
+          {
+            echo "### Charter IPFS check"
+            echo
+            echo "**CID for this PR's \`Safenet_Arbitration_Charter.md\`:**"
+            echo '```'
+            echo "$cid_output"
+            echo '```'
+            echo
+            echo "**Comparison against \`charter.safenet-gov.eth\`:**"
+            echo '```'
+            echo "$diff_output"
+            echo '```'
+            echo
+            echo "<!-- charter-cid-check -->"
+          } > comment-body.md
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: charter-cid-report
+          path: comment-body.md
+          retention-days: 7
