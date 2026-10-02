@@ -19,6 +19,7 @@ This charter defines:
 
 ### Scope
 
+- Network and Safe validity: block transactions on networks not listed in this Article, or for an address that is not a Safe, under the network and Safe validity rule in Article IV.
 - Safe settings-change blocking: block Safe settings changes submitted through Safenet, except where expressly allowed under the settings-change rules in Article IV.
 - Delegatecall integrity: block delegatecalls that modify Safe storage, except where expressly allowed under the delegatecall integrity rules in Article IV.
 - Target manipulation.
@@ -35,10 +36,11 @@ This charter defines:
 
 ### Networks
 
-- This charter’s transaction-security rules apply only to transactions submitted to Safenet on the following networks:
+- Except for R-4.0, this charter’s transaction-security rules apply only to transactions submitted to Safenet on the following networks:
   - Ethereum Mainnet — chain ID 1
   - Arbitrum One — chain ID 42161
   - Gnosis Chain — chain ID 100
+- R-4.0 applies to transactions submitted to Safenet on any network. A transaction on a network not listed above is insecure under R-4.0.
 - Council composition, authority, procedure, precedent, and versioning provisions apply independently of network unless stated otherwise.
 - Future networks may be added through the charter versioning process under § 5.4.
 
@@ -466,7 +468,8 @@ This charter defines:
 
 #### Rule
 
-- If an arbitration request is outside the transaction-security scope or networks defined in Article I, the Council determines it is `out of scope` and does not make a security determination under this Charter.
+- If an arbitration request is outside the transaction-security scope defined in Article I, the Council determines it is `out of scope` and does not make a security determination under this Charter.
+- A transaction on a network not listed in Article I, or for an address that is not a Safe (§ 2.1), is not out of scope. It is insecure under R-4.0.
 
 #### Effect
 
@@ -494,6 +497,34 @@ This charter defines:
 - The Council does not exercise discretion.
 - Failing any deterministic rule makes the transaction insecure.
 - No further analysis is required for that deterministic failure.
+
+---
+
+### R-4.0 — Network and Safe validity
+
+#### Rule
+
+- A transaction is insecure if either of the following applies:
+  - its chain ID is not one of the networks listed in Article I;
+  - the Safe address in the transaction (§ 2.3) is not a Safe (§ 2.1) on that network at proposal time.
+
+#### Applies to
+
+- every transaction submitted to Safenet, on any network.
+
+#### Council applies by checking
+
+- whether the chain ID is one of the networks listed in Article I;
+- whether, at proposal time, the Safe address on that network is a Safe using a valid Safe smart account version listed in § 2.1.
+
+#### Effect
+
+- A transaction that fails either check is insecure.
+- No intent inquiry is required.
+
+#### Note
+
+- Without this rule, no Charter rule would apply to these transactions. Sentinels would not vote, the request would time out, and the Proposer fee would be refunded. Spam proposals would then cost only gas, while every Sentinel would bear the cost of assessing them. Under this rule, Sentinels can cast insecure votes, and the request then resolves without refunding the Proposer fee.
 
 ---
 
