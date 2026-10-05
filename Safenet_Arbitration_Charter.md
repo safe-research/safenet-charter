@@ -70,10 +70,18 @@ This charter defines:
 
 #### Rules
 
-- Valid Safe smart account versions are:
+- Valid Safe smart account singleton versions are:
   - 1.3.0
   - 1.4.1
   - 1.5.0
+- Valid Safe proxy versions are:
+  - 1.0.0
+  - 1.1.1
+  - 1.2.0
+  - 1.3.0
+  - 1.4.1
+  - 1.5.0
+- A transaction is evaluated against the Safe singleton version in use when it was proposed, which is assumed not to change before execution.
 - The official Safe Ecosystem Foundation GitHub repository for the Safe smart account is:
   - `https://github.com/safe-fndn/safe-smart-account`
 
@@ -262,7 +270,7 @@ This charter defines:
 - enabled modules;
 - fallback handler;
 - guard;
-- module guard;
+- module guard (Safe singleton version 1.5.0 only);
 - owner list;
 - signing threshold.
 
@@ -509,7 +517,7 @@ This charter defines:
 - enabled modules;
 - fallback handler;
 - guard;
-- module guard;
+- module guard (Safe singleton version 1.5.0 only);
 - owner list;
 - signing threshold.
 
