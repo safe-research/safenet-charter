@@ -84,7 +84,7 @@ This charter defines:
   - 1.3.0
   - 1.4.1
   - 1.5.0
-- A proxy has a valid Safe proxy version only if its runtime code at proposal time is identical to that of proxies created by the official Safe proxy factory deployment of that version on that network. Custom or modified proxies do not qualify, even if they delegate to a valid singleton.
+- A proxy has a valid Safe proxy version only if its runtime code at proposal time is identical to that of proxies created by the official Safe proxy factory deployment of that version (for 1.2.0, the 1.1.1 factory) on that network. Custom or modified proxies do not qualify, even if they delegate to a valid singleton.
 - An address is a Safe only if both its proxy version and its singleton version are valid.
 - Checks are evaluated against the singleton in use when the transaction was proposed, assuming it does not change before execution. Safenet does not enforce this assumption.
 - The official Safe Ecosystem Foundation GitHub repository for the Safe smart account is:
