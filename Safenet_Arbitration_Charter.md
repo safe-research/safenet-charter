@@ -72,10 +72,20 @@ This charter defines:
 
 #### Rules
 
-- Valid Safe smart account versions are:
+- Valid Safe smart account singleton versions are:
   - 1.3.0
   - 1.4.1
   - 1.5.0
+- The singleton of a Safe is the address stored in storage slot 0 of the Safe at proposal time. It has a valid singleton version only if it is an official deployment of that version, including its L2 variant, on that network. A version reported by the singleton itself, such as `VERSION()`, is not sufficient.
+- Valid Safe proxy versions are:
+  - 1.0.0
+  - 1.1.1
+  - 1.3.0
+  - 1.4.1
+  - 1.5.0
+- A proxy has a valid Safe proxy version only if its runtime code at proposal time is identical to that of proxies created by the official Safe proxy factory deployment of that version on that network. Custom or modified proxies do not qualify, even if they delegate to a valid singleton.
+- An address is a Safe only if both its proxy version and its singleton version are valid.
+- Checks are evaluated against the singleton in use when the transaction was proposed, assuming it does not change before execution. Safenet does not enforce this assumption.
 - The official Safe Ecosystem Foundation GitHub repository for the Safe smart account is:
   - `https://github.com/safe-fndn/safe-smart-account`
 
@@ -83,6 +93,7 @@ This charter defines:
 
 - Documentation for the Safe smart account is available at:
   - `https://docs.safefoundation.org/smart-account/overview`
+- Version 1.2.0 shipped no proxy factory; Safes created during the 1.2.0 release use the 1.1.1 proxy.
 
 ### § 2.2 Solidity
 
@@ -264,7 +275,7 @@ This charter defines:
 - enabled modules;
 - fallback handler;
 - guard;
-- module guard;
+- module guard (Safe singleton version 1.5.0 only);
 - owner list;
 - signing threshold.
 
@@ -515,7 +526,7 @@ This charter defines:
 #### Council applies by checking
 
 - whether the chain ID is one of the networks listed in Article I;
-- whether, at proposal time, the Safe address on that network is a Safe using a valid Safe smart account version listed in § 2.1.
+- whether, at proposal time, the Safe address on that network is a Safe under § 2.1.
 
 #### Effect
 
@@ -540,7 +551,7 @@ This charter defines:
 - enabled modules;
 - fallback handler;
 - guard;
-- module guard;
+- module guard (Safe singleton version 1.5.0 only);
 - owner list;
 - signing threshold.
 
