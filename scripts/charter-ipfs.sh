@@ -6,27 +6,18 @@
 #   cid   [file]  Compute the IPFS CID a file would get (requires kubo's `ipfs` CLI).
 #   pin   [file]  Upload a file to IPFS via Pinata (requires PINATA_JWT).
 #   diff  [file]  Compare a local file against the content currently referenced
-#                 by the ENS name's onchain contenthash record.
+#                 by the ENS name's onchain contenthash record (requires `cast`,
+#                 from Foundry).
 #
-# Env overrides: RPC_URL, IPFS_GATEWAY_URL, PINATA_JWT.
+# Env overrides: RPC_URL, IPFS_GATEWAY_URL, ENS_NAME, PINATA_JWT.
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEFAULT_FILE="$REPO_ROOT/Safenet_Arbitration_Charter.md"
 
-# The ENS name this tool checks, and its namehash. Both are fixed constants, not
-# runtime-configurable: computing namehash() for an arbitrary name needs real
-# Keccak-256, which isn't available in bash/jq/python's stdlib, so instead this
-# is hardcoded for this one name. To point at a different name, regenerate both
-# with: cast namehash "<name>" (cross-checked here against viem's namehash()).
-ENS_NAME="charter.safenet-gov.eth"
-ENS_NODE="0x8eb28b73557db9dbf11eb3284826984b167db85cbc1ae64e80ba91f9167d07ea"
-
+ENS_NAME="${ENS_NAME:-charter.safenet-gov.eth}"
 ENS_REGISTRY="0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"
-# Function selectors (fixed ABI constants, verified with `cast sig`):
-SEL_RESOLVER="0x0178b8bf"   # resolver(bytes32)
-SEL_CONTENTHASH="0xbc1c58d1" # contenthash(bytes32)
 
 die() {
   echo "error: $*" >&2
@@ -37,54 +28,6 @@ require() {
   command -v "$1" >/dev/null 2>&1 || die "'$1' is required but not installed."
 }
 
-# Loads KEY=VALUE lines from .env into the environment, without clobbering
-# anything the caller already set explicitly (real env vars always win).
-load_dotenv() {
-  local f="$REPO_ROOT/.env"
-  [ -f "$f" ] || return 0
-  local line key value
-  while IFS= read -r line || [ -n "$line" ]; do
-    case "$line" in
-      ''|'#'*) continue ;;
-    esac
-    key="${line%%=*}"
-    value="${line#*=}"
-    value="${value%\"}"; value="${value#\"}"
-    value="${value%\'}"; value="${value#\'}"
-    if [ -z "${!key+x}" ]; then
-      export "$key=$value"
-    fi
-  done < "$f"
-}
-
-# eth_call helper: prints the raw hex `result` field (no ABI decoding).
-eth_call() {
-  local to="$1" data="$2"
-  local payload response result
-  payload=$(printf '{"jsonrpc":"2.0","id":1,"method":"eth_call","params":[{"to":"%s","data":"%s"},"latest"]}' "$to" "$data")
-  response=$(curl -sS --fail --max-time 20 -H 'Content-Type: application/json' -d "$payload" "$RPC_URL") \
-    || die "eth_call to $to failed (RPC_URL=$RPC_URL)"
-  if echo "$response" | jq -e '.error' >/dev/null 2>&1; then
-    die "eth_call to $to returned an RPC error: $(echo "$response" | jq -c '.error')"
-  fi
-  result=$(echo "$response" | jq -r '.result')
-  [ "$result" != "null" ] || die "eth_call to $to returned no result"
-  echo "$result"
-}
-
-# Strips the ABI head from a dynamic `bytes` return value, printing the raw payload hex (no 0x).
-abi_decode_bytes() {
-  local hex="${1#0x}"
-  local len_hex payload_hex len_bytes len_hex_chars
-  [ "${#hex}" -ge 128 ] || die "unexpected ABI response for a dynamic bytes return: 0x$hex"
-  # word 1 = offset (ignored, always 0x20 for a single dynamic return), word 2 = length
-  len_hex="${hex:64:64}"
-  len_bytes=$((16#$len_hex))
-  len_hex_chars=$((len_bytes * 2))
-  payload_hex="${hex:128:$len_hex_chars}"
-  echo "$payload_hex"
-}
-
 # Decodes an EIP-1577 ipfs-ns contenthash payload (hex, no 0x) into a CIDv1 string.
 decode_ipfs_contenthash() {
   local hex="$1"
@@ -93,15 +36,11 @@ decode_ipfs_contenthash() {
     "") die "contenthash is empty" ;;
     *) die "contenthash is not an ipfs-ns record (got prefix ${hex:0:4})" ;;
   esac
-  local cid_hex="${hex:4}"
-  local cid_bin b32
-  cid_bin=$(mktemp)
-  trap 'rm -f "$cid_bin"' RETURN
-  echo -n "$cid_hex" | xxd -r -p > "$cid_bin"
+  local cid_hex="${hex:4}" b32
   if command -v base32 >/dev/null 2>&1; then
-    b32=$(base32 -w0 < "$cid_bin" | tr 'A-Z' 'a-z' | tr -d '=')
+    b32=$(echo -n "$cid_hex" | xxd -r -p | base32 -w0 | tr 'A-Z' 'a-z' | tr -d '=')
   elif command -v python3 >/dev/null 2>&1; then
-    b32=$(python3 -c "import base64,sys; print(base64.b32encode(sys.stdin.buffer.read()).decode().lower().rstrip('='))" < "$cid_bin")
+    b32=$(echo -n "$cid_hex" | xxd -r -p | python3 -c "import base64,sys; print(base64.b32encode(sys.stdin.buffer.read()).decode().lower().rstrip('='))")
   else
     die "need either 'base32' or 'python3' to encode the CID"
   fi
@@ -122,7 +61,7 @@ cmd_pin() {
   [ -f "$file" ] || die "no such file: $file"
   require curl
   require jq
-  [ -n "${PINATA_JWT:-}" ] || die "PINATA_JWT is not set (export it, or put it in $REPO_ROOT/.env)"
+  [ -n "${PINATA_JWT:-}" ] || die "PINATA_JWT is not set in the environment"
 
   local raw http_status response cid
   raw=$(curl -sS --max-time 60 -w '\n%{http_code}' \
@@ -150,22 +89,23 @@ cmd_pin() {
 cmd_diff() {
   local file="${1:-$DEFAULT_FILE}"
   [ -f "$file" ] || die "no such file: $file"
+  require cast
   require curl
-  require jq
   require xxd
 
-  local resolver
-  resolver=$(eth_call "$ENS_REGISTRY" "${SEL_RESOLVER}${ENS_NODE#0x}")
-  # left-pad-stripped address is the last 20 bytes (40 hex chars) of the 32-byte word
-  resolver="0x${resolver: -40}"
+  local node resolver
+  node=$(cast namehash "$ENS_NAME") || die "'cast namehash' failed"
+  resolver=$(cast call "$ENS_REGISTRY" "resolver(bytes32)(address)" "$node" --rpc-url "$RPC_URL") \
+    || die "eth_call to the ENS registry failed (RPC_URL=$RPC_URL)"
   if [ "$resolver" = "0x0000000000000000000000000000000000000000" ]; then
     echo "No resolver set for $ENS_NAME yet. Nothing to diff."
     return 0
   fi
 
-  local raw_result contenthash_hex cid
-  raw_result=$(eth_call "$resolver" "${SEL_CONTENTHASH}${ENS_NODE#0x}")
-  contenthash_hex=$(abi_decode_bytes "$raw_result")
+  local raw_contenthash contenthash_hex cid
+  raw_contenthash=$(cast call "$resolver" "contenthash(bytes32)(bytes)" "$node" --rpc-url "$RPC_URL") \
+    || die "eth_call to the resolver failed (RPC_URL=$RPC_URL)"
+  contenthash_hex="${raw_contenthash#0x}"
   if [ -z "$contenthash_hex" ]; then
     echo "No contenthash set for $ENS_NAME yet. Nothing to diff."
     return 0
@@ -179,8 +119,7 @@ cmd_diff() {
   # Check 1: does the local file hash to the same CID? (only possible if kubo is installed)
   if command -v ipfs >/dev/null 2>&1; then
     local local_cid
-    local_cid=$(ipfs add --only-hash --cid-version 1 -Q "$file") \
-      || die "'ipfs add' failed while computing the local CID"
+    local_cid=$(cmd_cid "$file")
     if [ "$local_cid" = "$cid" ]; then
       echo "✓ CID matches ($local_cid)"
     else
@@ -218,17 +157,18 @@ Usage: $(basename "$0") <cid|pin|diff> [file]
 
   cid   [file]  Compute the IPFS CID for a file (default: Safenet_Arbitration_Charter.md).
                 Requires the kubo 'ipfs' CLI.
-  pin   [file]  Upload a file to IPFS via Pinata. Requires PINATA_JWT (env or .env).
+  pin   [file]  Upload a file to IPFS via Pinata. Requires PINATA_JWT set in the
+                environment (export it yourself, or pass it via your container
+                runtime's --env-file).
   diff  [file]  Diff a local file against the content referenced by ${ENS_NAME}'s
-                onchain contenthash record.
+                onchain contenthash record. Requires 'cast' (from Foundry).
 
-Env overrides: RPC_URL, IPFS_GATEWAY_URL, PINATA_JWT.
+Env overrides: RPC_URL, IPFS_GATEWAY_URL, ENS_NAME, PINATA_JWT.
 EOF
   exit 1
 }
 
 main() {
-  load_dotenv
   RPC_URL="${RPC_URL:-https://ethereum-rpc.publicnode.com}"
   IPFS_GATEWAY_URL="${IPFS_GATEWAY_URL:-https://gateway.pinata.cloud/ipfs}"
 

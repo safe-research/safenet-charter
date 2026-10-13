@@ -1,0 +1,7 @@
+{
+  "name": "safenet-charter",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "npm ci"
+}
